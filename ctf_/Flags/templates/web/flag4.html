@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: monospace; 
+      background-color: black;
+      color: #00ff00;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    
+    .widget {
+    display: inline-block;
+    margin: 0 10px;
+    padding: 15px 20px;
+    border: 1px solid #0F0;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #0F0;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    background-color: #000;
+    font-size: 16px;
+}
+.widget:hover {
+            transform: scale(1.05);
+        }
+    .terminal {
+      background-color: rgb(12, 12, 12); /* Background color changed to green */
+      border: 2px solid #00ff00;
+      padding: 10px;
+      width: 500px;
+      height: 300px;
+      overflow: hidden;
+    }
+
+    .output {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow-y: scroll;
+      padding-right: 15px;
+    }
+
+    .prompt {
+      color: #00ff00;
+    }
+
+    .cursor {
+      animation: blink 1s infinite;
+    }
+
+    .input {
+      display: flex;
+    }
+
+    .color-options {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+  </style>
+  <title>Terminal Input and Typing Animation</title>
+</head>
+<body>
+  <div class="terminal">
+    <div class="output">
+      <span class="prompt">{{name}}@terminal:~$</span>
+      <span class="text"></span><span class="cursor">_</span>
+    </div>
+    <div class="input">
+      <span class="prompt">{{name}}@terminal:~$</span>
+      <input class="input-field" type="text" autofocus />
+    </div>
+    
+  </div>
+  <div class="widget">
+    <form method="POST" action="/login">
+      {% csrf_token %}
+      <input type="hidden" id = "name" name = "name" value = "{{name}}">
+      <input type="hidden" id = "id" name = "id" value = "{{id}}">
+      <button class="widget" type="submit" >redirect</button>
+    </form>
+    <button class="widget" id="copy-flag-button" >copy_flag</button>
+  </div>
+  <script>
+    const textElement = document.querySelector('.text');
+    const cursorElement = document.querySelector('.cursor');
+    const inputField = document.querySelector('.input-field');
+    const outputElement = document.querySelector('.output');
+    const initialText = "Hint (handel_input())";
+    let text = initialText;
+    let charIndex = 0;
+    const commandHistory = [];
+  
+    function type() {
+      if (charIndex < text.length) {
+        textElement.textContent += text.charAt(charIndex);
+        charIndex++;
+        setTimeout(type, 50);
+      } else {
+        cursorElement.style.display = 'none';
+      }
+    }
+  
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+  
+    function handleInput() {
+      const command = inputField.value;  
+      commandHistory.push(command);// f"select {command} from database"
+      inputField.value = '';  
+      console.log('Handling input...');
+  
+      
+      fetch('/flag4', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken'),
+        },
+        body: JSON.stringify({ query: command }),  
+      })
+      .then(response => {
+        if (response.ok) {
+          return response.text();
+        } else {
+          throw new Error("Error: " + response.status);
+        }
+      })
+      .then(data => {
+        console.log(data); // Check if the flag data is printed correctly
+        appendOutput(data);
+        document.getElementById('copy-flag-button').style.display = 'inline';
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+  
+    function appendOutput(outputText) {
+      const outputLine = document.createElement('div');
+      outputLine.textContent = outputText;
+      outputElement.appendChild(outputLine);
+      outputElement.scrollTop = outputElement.scrollHeight;
+    }
+  
+    function copyFlag() {
+      const flagData = document.querySelector('.output div:last-child').textContent; // Get the last output line (flag data)
+      const textArea = document.createElement('textarea');
+      textArea.value = flagData;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+    }
+  
+    inputField.addEventListener('keydown', function(event) {
+  if (event.key === 'Enter') {
+    handleInput();
+  }
+});
+
+// Find the "Copy Flag" button element
+const copyFlagButton = document.getElementById('copy-flag-button');
+
+// Add a click event listener to the button
+copyFlagButton.addEventListener('click', function() {
+  copyFlag();
+});
+  
+    type();
+  </script>
+  
+</body>
+</html>

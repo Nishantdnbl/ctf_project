@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: monospace;
+      background-color: black;
+      color: #00ff00;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .terminal {
+      background-color: rgb(12, 12, 12); /* Background color changed to green */
+      border: 2px solid #00ff00;
+      padding: 10px;
+      width: 500px;
+      height: 300px;
+      overflow: hidden;
+    }
+
+    .output {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow-y: scroll;
+      padding-right: 15px;
+    }
+
+    .prompt {
+      color: #00ff00;
+    }
+    .widget {
+    display: inline-block;
+    margin: 0 10px;
+    padding: 15px 20px;
+    border: 1px solid #0F0;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #0F0;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    background-color: #000;
+    font-size: 16px;
+}
+
+    .cursor {
+      animation: blink 1s infinite;
+    }
+
+    .input {
+      display: flex;
+    }
+
+    .color-options {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+  </style>
+  <title>Terminal Input and Typing Animation</title>
+</head>
+<body>
+  <div class="terminal">
+    <div class="output">
+      <span class="prompt">{{name}}@terminal:~${{msg}}</span>
+      <span class="text"></span><span class="cursor">_</span>
+    </div>
+    
+    <div class="input">
+      <span class="prompt">{{name}}@terminal:~$</span>
+      <form action="submit", method="POST">
+        {% csrf_token %}
+      <input name="User_inp"  id="User_inp" type="text" autofocus />
+      <input type="hidden" id = {{name}} name = "name" value = "{{name}}">
+      <input type="hidden" id = {{id}} name = "id" value = "{{id}}">
+      <button type="submit"> Submit Flag </button>
+    </form>
+    </div>
+    
+  </div>
+  
+  <div class="widget">
+    <form method="POST" action="/login">
+      {% csrf_token %}
+      <input type="hidden" id = "name" name = "name" value = "{{name}}">
+      <input type="hidden" id = "id" name = "id" value = "{{id}}">
+      <button class="widget" type="submit" >redirect</button>
+    </form>
+  </div>
+
+
+</body>
+</html>

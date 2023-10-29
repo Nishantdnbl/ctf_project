@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', monospace;
+            background-color: #000;
+            color: #0F0;
+        }
+
+        .terminal {
+            width: 800px;
+            margin: 100px auto;
+            background-color: #000;
+            border: 2px solid #0F0;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 255, 0, 0.5);
+        }
+
+        .terminal-header {
+            background-color: #333;
+            padding: 5px 10px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .terminal-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .terminal-button {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .close { background-color: #FF605C; }
+        .minimize { background-color: #FFBD44; }
+        .maximize { background-color: #33C74F; }
+
+        .terminal-title {
+            color: #0F0;
+            font-size: 16px;
+        }
+
+        .terminal-content {
+            padding: 10px;
+            line-height: 1.5;
+        }
+
+        pre {
+            margin: 0;
+        }
+
+        #cursor {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* Added styles for clickable widgets */
+        .widget-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .widget {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 15px 20px;
+            border: 1px solid #0F0;
+            border-radius: 10px;
+            cursor: pointer;
+            color: #0F0;
+            transition: transform 0.3s ease;
+        }
+        .submit-widget {
+            margin-left: 10px;
+            background-color: #0F0;
+            color: #000;
+            border: 1px solid #0F0;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .widget:hover {
+            transform: scale(1.05);
+        }
+
+        /* Added styles for the input form */
+        .input-form {
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .input-form form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .input-form label {
+            font-size: 18px;
+            color: #0F0;
+            margin-bottom: 10px;
+        }
+
+        .input-form input {
+            width: 300px;
+            padding: 10px;
+            border: 1px solid #0F0;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            background-color: #000;
+            color: #0F0;
+        }
+        .widget {
+    display: inline-block;
+    margin: 0 10px;
+    padding: 15px 20px;
+    border: 1px solid #0F0;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #0F0;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    background-color: #000;
+    font-size: 16px;
+}
+
+.widget:hover {
+    transform: scale(1.05);
+    background-color: #0F0;
+    color: #000;
+}
+
+    .submit-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .input-form button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #0F0;
+            color: #000;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .input-form button:hover {
+            background-color: #33C74F;
+        }
+
+        /* New styles for typing animation */
+        .typing-animation {
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            color: #0F0;
+            margin-top: 20px;
+        }
+
+        #cursor {
+            
+            margin-right: 2px;
+        }
+
+        #typing-text {
+            animation: typing 3s steps(10, end);
+        }
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+        }
+    </style>
+    <title>CTF Challenge</title>
+</head>
+<body>
+    <div class="terminal">
+        <div class="terminal-header">
+            <div class="terminal-buttons">
+                <div class="terminal-button close"></div>
+                <div class="terminal-button minimize"></div>
+                <div class="terminal-button maximize"></div>
+            </div>
+            <div class="terminal-title">CTF Challenge</div>
+        </div>
+        <div class="terminal-content">
+            <!-- Your terminal content goes here -->
+
+            <!-- Typing animation element -->
+            <div class="typing-animation">
+                <span id="cursor"></span>
+                <span id="typing-text">Hi {{name}} </span><br>
+                
+            </div>
+        </div>
+    </div>
+    <div class="widget-container">
+        <form method="POST" action="/challange_1:">
+            {% csrf_token %}
+            <input type="hidden" id = {{name}} name = "name" value = "{{name}}">
+            <input type="hidden" id = {{id}} name = "id" value = "{{id}}">
+            <button class="widget" type="submit" >challange_1</button>
+        </form>
+        <form method="POST" action="/challange_2:">
+            {% csrf_token %}
+            <input type="hidden" id = {{name}} name = "name" value = "{{name}}">
+            <input type="hidden" id = {{id}} name = "id" value = "{{id}}">
+            <button class="widget" type="submit" >challange_2</button>
+        </form>
+        <form method="POST" action="/challange_3:">
+            {% csrf_token %}
+            <input type="hidden" id = {{name}} name = "name" value = "{{name}}">
+            <input type="hidden" id = {{id}} name = "id" value = "{{id}}">
+            <button class="widget" type="submit" >challange_3</button>
+        </form>
+        <form method="POST" action="/challange_4:">
+            {% csrf_token %}
+            <input type="hidden" id = {{name}} name = "name" value = "{{name}}">
+            <input type="hidden" id = {{id}} name = "id" value = "{{id}}">
+            <button class="widget" type="submit" >challange_4</button>
+        </form>
+        <form method="POST" action="/challange_5:">
+            {% csrf_token %}
+            <input type="hidden" id = {{name}} name = "name" value = "{{name}}">
+            <input type="hidden" id = {{id}} name = "id" value = "{{id}}">
+            <button class="widget" type="submit" >challange_5</button>
+        </form>
+    </div>
+    <div class="submit-button">
+        <form method="POST" action="/submit">
+            {% csrf_token %}
+            <input type="hidden" id = {{name}} name = "name" value = "{{name}}">
+            <input type="hidden" id = {{id}} name = "id" value = "{{id}}">
+            <button class = "widget submit-widget" type="submit"> Submit Flag </button>
+        </form>
+    </div>
+    
+</body>
+</html>

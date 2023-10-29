@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', monospace;
+            background-color: #000;
+            color: #0F0;
+        }
+
+        .terminal {
+            width: 600px;
+            margin: 100px auto;
+            background-color: #000;
+            border: 2px solid #0F0;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 255, 0, 0.5);
+        }
+
+        .terminal-header {
+            background-color: #333;
+            padding: 5px 10px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .terminal-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .terminal-button {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .close { background-color: #FF605C; }
+        .minimize { background-color: #FFBD44; }
+        .maximize { background-color: #33C74F; }
+
+        .terminal-title {
+            color: #0F0;
+            font-size: 16px;
+        }
+
+        .terminal-content {
+            padding: 10px;
+            line-height: 1.5;
+        }
+
+        pre {
+            margin: 0;
+        }
+
+        #cursor {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* Added styles for clickable widgets */
+        .widget-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .widget {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 15px 20px; /* Increased padding for a larger area */
+            border: 1px solid #0F0;
+            border-radius: 10px;
+            cursor: pointer;
+            color: #0F0; /* Change widget text color to green */
+            transition: transform 0.3s ease;
+        }
+
+        .widget:hover {
+            transform: scale(1.05);
+        }
+
+        /* Added styles for the input form */
+        .input-form {
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .input-form form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .input-form label {
+            font-size: 18px;
+            color: #0F0;
+            margin-bottom: 10px;
+        }
+
+        .input-form input {
+            width: 300px;
+            padding: 10px;
+            border: 1px solid #0F0;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            background-color: #000; /* Set background color to black */
+            color: #0F0; /* Set text color to green */
+        }
+
+        .input-form button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #0F0;
+            color: #000;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .input-form button:hover {
+            background-color: #33C74F;
+        }
+    </style>
+    <title>CTF Challenge</title>
+</head>
+<body>
+    <div class="terminal">
+        <div class="terminal-header">
+            <div class="terminal-buttons">
+                <div class="terminal-button close"></div>
+                <div class="terminal-button minimize"></div>
+                <div class="terminal-button maximize"></div>
+            </div>
+            <div class="terminal-title">CTF Challenge</div>
+        </div>
+        <div class="input-form">
+            <form method="POST" action="/login">
+                {% csrf_token %}
+                <label for="name">Enter your name:</label>
+                <input type="text" id="name" name="name" placeholder="Your Name" />
+                <input type="text" id="id" name="id" placeholder="Your id" />
+                <button type="submit">Submit</button>
+
+            </form>
+        </div>
+    </div>
+    
+    <!-- Widget container outside the terminal 
+    <div class="widget-container">
+        <a href="/challange_1:" class="widget">Challenge 1</a>
+        <a href="/challange_2:" class="widget">Challenge 2</a>
+        <a href="/challange_3:" class="widget">Challenge 3</a>
+        <a href="/challange_4:" class="widget">Challenge 4</a>
+        <a href="/challange_5:" class="widget">Challenge 5</a>
+    </div>-->
+</body>
+</html>
